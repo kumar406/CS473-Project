@@ -63,7 +63,8 @@ def label_image(img_path, label_map_path, detection_model):
     return final_detections
 def label_images(img_paths, label_map_path, detection_model):
     labeled_images = []
-    for img_path in img_paths:
+    for i, img_path in enumerate(img_paths):
+        print(f"{i}/{len(img_paths)}")
         labeled_images.append({
             'img': img_path,
             'labels': label_image(img_path, label_map_path, detection_model)
