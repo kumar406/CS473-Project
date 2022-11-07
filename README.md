@@ -12,7 +12,7 @@ Members:
 MODULE 1:
 
 Relevant Files: 
-- Tensorflow/workspace/models/bingus_model
+- Tensorflow/workspace/models/bingus_model/*
 - holdup2.ipynb
 - identify_image.py
 - testdriver.ipynb
