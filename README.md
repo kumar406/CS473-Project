@@ -31,3 +31,5 @@ Relevant File:
 (1) pip3 install easyocr
 
 (2) python3 module2.py
+
+--> Note: This will take a while to run. For convenience, the output is located in module2_output.txt
