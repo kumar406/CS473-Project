@@ -9,17 +9,40 @@ Members:
 
 -----------------------------------------------------
 
+PACKAGES REQUIRED
+- tensorflow
+- object_detection
+- cv2 (loading image purposes, no detection)
+- numpy
+- easyocr
+- pillow
+
+-----------------------------------------------------
+RUN MODULE 1 & 2:
+
+Relevant File:
+- DRIVER.ipynb
+- module1.py
+- module2.py
+- Tensorflow/workspace/*
+
+(1) run DRIVER.ipynb to execute module1.py and module2.py
+
+-----------------------------------------------------
+
 MODULE 1:
 
 Relevant Files: 
-- Tensorflow/workspace/models/bingus_model/*
+- Tensorflow/workspace/*
 - holdup2.ipynb
-- identify_image.py
-- testdriver.ipynb
+- module1.py
+- DRIVER.ipynb
 
-(1) Read holdup2.ipynb to setup 
+(1) Read holdup2.ipynb to see how model is trained
 
-(2) Use testdriver.ipynb to test identify_image.py
+(2) Use DRIVER.ipynb to test module1.py
+
+(3) module1_ouput printed in DRIVER.ipynb
 
 -----------------------------------------------------
 
@@ -27,8 +50,9 @@ MODULE 2:
 
 Relevant File:
 - module2.py
-- drive_mod2.ipynb
+- DRIVER.ipynb
 
-(1) pip3 install easyocr
+(1) Use DRIVER.ipynb to to test module2.py
 
-(2) Use drive_mod2.ipynb to to test module2.py
+(2) module2_output printed in DRIVER.ipynb
+
