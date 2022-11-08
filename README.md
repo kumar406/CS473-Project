@@ -1,6 +1,6 @@
 This is our CS473 Project!
 
-Members: 
+Group 6 Members: 
 - Dithi Saxena
 - Sweta Saravanan
 - Shashank Kumar
