@@ -19,7 +19,7 @@ Relevant Files:
 
 (1) Read holdup2.ipynb to setup 
 
-(2) Use identify_image.py to use testdriver.ipynb
+(2) Use testdriver.ipynb to test identify_image.py
 
 -----------------------------------------------------
 
@@ -27,9 +27,8 @@ MODULE 2:
 
 Relevant File:
 - module2.py
+- drive_mod2.ipynb
 
 (1) pip3 install easyocr
 
-(2) python3 module2.py
-
---> Note: This will take a while to run. For convenience, the output is located in module2_output.txt
+(2) Use drive_mod2.ipynb to to test module2.py
