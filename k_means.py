@@ -174,7 +174,6 @@ def kMeans():
     kmeans_clusters = kmeans.labels_
 
     score = silhouette_score(erds_vectors, kmeans_clusters, metric='euclidean')
-    print(score)
 
     # get clusters for erd files
     clusters = []
