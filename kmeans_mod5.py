@@ -166,7 +166,6 @@ def kMeans():
         erds_vectors_with_filename[key] = erds_vectors[index]
         index = index + 1   
 
-    print(erds_vectors_with_filename)
 
     # combine vectors with method 1 in module 5 
     # 
@@ -195,7 +194,6 @@ def kMeans():
     kmeans_clusters = kmeans.labels_
 
     score = silhouette_score(erds_vectors, kmeans_clusters, metric='euclidean')
-    print(score)
 
     # get clusters for erd files
     clusters = []
