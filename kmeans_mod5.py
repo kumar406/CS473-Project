@@ -193,8 +193,6 @@ def kMeans():
     kmeans = KMeans(n_clusters=int(K), random_state = 0, init='k-means++').fit(erds_vectors)
     kmeans_clusters = kmeans.labels_
 
-    score = silhouette_score(erds_vectors, kmeans_clusters, metric='euclidean')
-
     # get clusters for erd files
     clusters = []
     for number in range(int(K)):
