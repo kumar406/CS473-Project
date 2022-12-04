@@ -186,7 +186,7 @@ def kMeans():
 
     erds_vect = []
 
-    for key, value in erds_vectors_with_filename:
+    for key, value in erds_vectors_with_filename.items():
         erds_vect.append(value)
 
     erds_vectors = erds_vect
