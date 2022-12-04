@@ -124,7 +124,8 @@ def kMeans():
     
     erds_filenames = image_words.keys()
     erds_contents = module3(image_words.values())
-
+    
+    m1_out = # call method for m1 output
 
     # get unique words words
     words = []
@@ -157,7 +158,6 @@ def kMeans():
 
         words_erd = unique_words
 
-    
     # dictionary of file name with vectors 
     erds_vectors_with_filename = {k: [] for k in erds_filenames}
 
@@ -166,17 +166,17 @@ def kMeans():
         erds_vectors_with_filename[key] = erds_vectors[index]
         index = index + 1   
 
-
     # combine vectors with method 1 in module 5 
-    # 
-    # variable for BoW : erds_vectors_with_filename
-    #
-    #
-    #
-    #
-    #
+    for erd in m1_out:
+        fname = os.path.basename(os.path.splitext(erd['img'])[0])
+        if (fname in erds_vectors_with_filename):
+            vec = [0 for x in range(7)]
+            for entity in erd['labels']:
+                vec[(entity['label']['id'] - 1)] += 1
+            erds_vectors_with_filename[fname] += vec
 
-        
+    erds_vectors = erds_vectors_with_filename.values()
+
     # if k = 0 determine k
     if(int(K) == 0):
         best_k = 2
