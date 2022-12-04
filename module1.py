@@ -19,9 +19,11 @@ def load_model(pipeline_config_path, ckpt_path):
     ckpt.restore(ckpt_path).expect_partial()
     return detection_model
 
-@tf.function
+@tf.function(reduce_retracing=True)
 def detect_fn(image, detection_model):
     image, shapes = detection_model.preprocess(image)
+    # print(shapes)
+    # prediction_dict = detection_model(image, shapes)
     prediction_dict = detection_model.predict(image, shapes)
     detections = detection_model.postprocess(prediction_dict, shapes)
     return detections
@@ -61,6 +63,7 @@ def label_image(img_path, label_map_path, detection_model):
                 'score': detections['detection_scores'][i]
                 })
     return final_detections
+
 def label_images(img_paths, label_map_path, detection_model):
     labeled_images = []
     for i, img_path in enumerate(img_paths):
