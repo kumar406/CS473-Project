@@ -8,6 +8,11 @@ from gensim import corpora
 import math
 from sklearn.metrics import silhouette_score
 from sklearn.cluster import KMeans
+import module1
+
+LABEL_MAP_PATH = 'Tensorflow\\workspace\\annotations\\label_map.pbtxt'
+CHECKPOINT_PATH = 'Tensorflow\\workspace\\models\\bingus_model\\ckpt-4'
+PIPELINE_CONFIG_PATH = 'Tensorflow\\workspace\\models\\bingus_model\\pipeline.config'
 
 
 def getERDs():
@@ -32,12 +37,18 @@ def getERDs():
     # find all Images
     img_list = os.listdir(dir_path) 
 
+    full_img_list = [dir_path + '\\' + x for x in img_list]
+    print(full_img_list)
+    
+    model = module1.load_model(PIPELINE_CONFIG_PATH, CHECKPOINT_PATH)
+    module1_output = module1.label_images(full_img_list, LABEL_MAP_PATH, model)
+
     image_words = dict()
     for img in img_list:
         temp_word_list = reader.readtext(dir_path + "/" + img, detail = 0)
         image_words[os.path.splitext(img)[0]] = temp_word_list
     
-    return(image_words, K)
+    return(image_words, K, module1_output)
 
 # <---------------------------------------------------->
 
@@ -120,12 +131,10 @@ def module3(contents):
 
 def kMeans():
 
-    image_words, K = getERDs()
+    image_words, K, m1_out = getERDs()
     
     erds_filenames = image_words.keys()
     erds_contents = module3(image_words.values())
-    
-    m1_out = # call method for m1 output
 
     # get unique words words
     words = []
@@ -175,7 +184,12 @@ def kMeans():
                 vec[(entity['label']['id'] - 1)] += 1
             erds_vectors_with_filename[fname] += vec
 
-    erds_vectors = erds_vectors_with_filename.values()
+    erds_vect = []
+
+    for key, value in erds_vectors_with_filename:
+        erds_vect.append(value)
+
+    erds_vectors = erds_vect
 
     # if k = 0 determine k
     if(int(K) == 0):
@@ -215,6 +229,5 @@ def kMeans():
     with open("base_line_clusters.txt", "w") as f:
         for key,values in erds_clusters.items():
             f.write(str(values) + "\n")
-
 
 kMeans()
