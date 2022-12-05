@@ -1,6 +1,5 @@
 import easyocr
 import os
-import sys
 import math
 import re
 from nltk.stem.porter import PorterStemmer
@@ -8,53 +7,30 @@ from gensim import corpora
 import math
 from sklearn.metrics import silhouette_score
 from sklearn.cluster import KMeans
-import module1
 
-LABEL_MAP_PATH = 'Tensorflow\\workspace\\annotations\\label_map.pbtxt'
-CHECKPOINT_PATH = 'Tensorflow\\workspace\\models\\bingus_model\\ckpt-4'
-PIPELINE_CONFIG_PATH = 'Tensorflow\\workspace\\models\\bingus_model\\pipeline.config'
+def module5(STOPWORDS_FILE, PARAMETERS_FILE, image_words_output, m1_out):
 
-
-def getERDs():
+    # google stopwords
+    with open(STOPWORDS_FILE) as f:
+        stopwords = [word.strip() for word in f.readlines()]
 
     # Initialize easyocr reader
     reader = easyocr.Reader(['en'])
 
     # parameters for module4 methods
-    file_name = "parameters.txt"
+    file_name = PARAMETERS_FILE
     dir_path = None
     K = None
-
-    # parse args
-    if len(sys.argv) >= 2:
-        file_name = sys.argv[1]
 
     # read file for directory path and K
     f = open(file_name)
     dir_path = f.readline().strip()
     K = f.readline().strip()
 
-    # find all Images
-    img_list = os.listdir(dir_path) 
+    erds_filenames = image_words_output.keys()
+    erds_contents = image_words_output.values()
 
-    full_img_list = [dir_path + '\\' + x for x in img_list]
-    print(full_img_list)
-    
-    model = module1.load_model(PIPELINE_CONFIG_PATH, CHECKPOINT_PATH)
-    module1_output = module1.label_images(full_img_list, LABEL_MAP_PATH, model)
-
-    image_words = dict()
-    for img in img_list:
-        temp_word_list = reader.readtext(dir_path + "/" + img, detail = 0)
-        image_words[os.path.splitext(img)[0]] = temp_word_list
-    
-    return(image_words, K, module1_output)
-
-# <---------------------------------------------------->
-
-def module3(contents):
-    
-    erds_contents = contents
+    # <------------------MODULE 3---------------------------------->
 
     # seperate words with spaces
     erds_remove_spaces = []
@@ -104,10 +80,6 @@ def module3(contents):
 
     erds_contents = erds_remove_camel_case
 
-    # get stopwords list
-    with open("stopwords.txt") as f:
-        stopwords = [word.strip() for word in f.readlines()]
-
     # remove stopwords
     for erd in erds_contents:
         for word in erd:
@@ -123,22 +95,11 @@ def module3(contents):
         stemmed_words = [ps.stem(word) for word in erd]
         stemmed_erd_content.append(stemmed_words)
 
-    erds_contents = stemmed_erd_content
-
-    return erds_contents
-
-# <---------------------------------------------------->
-
-def kMeans():
-
-    image_words, K, m1_out = getERDs()
-    
-    erds_filenames = image_words.keys()
-    erds_contents = module3(image_words.values())
+    # <---------------------------------------------------->
 
     # get unique words words
     words = []
-    for erd in erds_contents:
+    for erd in stemmed_erd_content:
         for word in erd:
             words.append(word)
     unique_words = set(words)
@@ -147,7 +108,7 @@ def kMeans():
     # get document vector
     erds_vectors = []
 
-    for erd in erds_contents:
+    for erd in stemmed_erd_content:
         dictionary = corpora.Dictionary()
         dict_BoW_corpus = [dictionary.doc2bow(erd, allow_update=True)]
         dict_id_words = [[(dictionary[id], count) for id, count in line] for line in dict_BoW_corpus]
@@ -165,7 +126,7 @@ def kMeans():
         
         erds_vectors.append(vector)
 
-        words_erd = unique_words
+        words_erd = unique_words   
 
     # dictionary of file name with vectors 
     erds_vectors_with_filename = {k: [] for k in erds_filenames}
@@ -173,7 +134,7 @@ def kMeans():
     index = 0 
     for key,val in erds_vectors_with_filename.items():
         erds_vectors_with_filename[key] = erds_vectors[index]
-        index = index + 1   
+        index = index + 1
 
     # combine vectors with method 1 in module 5 
     for erd in m1_out:
@@ -207,6 +168,9 @@ def kMeans():
     kmeans = KMeans(n_clusters=int(K), random_state = 0, init='k-means++').fit(erds_vectors)
     kmeans_clusters = kmeans.labels_
 
+    score = silhouette_score(erds_vectors, kmeans_clusters, metric='euclidean')
+    print(score)
+
     # get clusters for erd files
     clusters = []
     for number in range(int(K)):
@@ -226,8 +190,15 @@ def kMeans():
     for key,val in erds_cluster_assignment.items():
         erds_clusters[val].append(key)
         
-    with open("base_line_clusters.txt", "w") as f:
-        for key,values in erds_clusters.items():
-            f.write(str(values) + "\n")
+    return erds_clusters
 
-kMeans()
+
+
+
+    
+
+
+
+
+    
+    
