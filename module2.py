@@ -22,5 +22,16 @@ def read_image(input):
       #print(tArray)
       output.append(tArray)
       tArray = []
-  print(output)
+  # print(output)
   return output
+
+
+def read_images(input):
+  out = []
+  for x in input:
+    out.append({
+      'filename' : x['img'],
+      'm2_out': read_image(x)
+
+    })
+  return out

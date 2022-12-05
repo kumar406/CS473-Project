@@ -8,14 +8,11 @@ import math
 from sklearn.metrics import silhouette_score
 from sklearn.cluster import KMeans
 
-def module4(STOPWORDS_FILE, PARAMETERS_FILE):
+def module4(STOPWORDS_FILE, PARAMETERS_FILE, img_list):
 
     # google stopwords
     with open(STOPWORDS_FILE) as f:
         stopwords = [word.strip() for word in f.readlines()]
-
-    # Initialize easyocr reader
-    reader = easyocr.Reader(['en'])
 
     # parameters for module4 methods
     file_name = PARAMETERS_FILE
@@ -28,13 +25,20 @@ def module4(STOPWORDS_FILE, PARAMETERS_FILE):
     K = f.readline().strip()
 
     # find all Images
-    img_list = os.listdir(dir_path) 
+    # img_list = os.listdir(dir_path) 
 
     image_words = dict()
+    # for img in img_list:
+    #     temp_word_list = reader.readtext(dir_path + "/" + img, detail = 0)
+    #     image_words[os.path.splitext(img)[0]] = temp_word_list
     for img in img_list:
-        temp_word_list = reader.readtext(dir_path + "/" + img, detail = 0)
-        image_words[os.path.splitext(img)[0]] = temp_word_list
-    
+        fn = img['filename']
+        if fn not in image_words:
+            image_words[fn] = []
+        for j in img['m2_out']:
+            image_words[fn] += j[1:]
+
+
     image_words_output = image_words
 
     erds_filenames = image_words.keys()

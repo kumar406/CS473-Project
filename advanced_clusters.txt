@@ -1,0 +1,4 @@
+['./Collec_2\\009.png', './Collec_2\\010.png', './Collec_2\\012.png']
+['./Collec_2\\001.png', './Collec_2\\005.png', './Collec_2\\006.png', './Collec_2\\007.png', './Collec_2\\008.png']
+['./Collec_2\\004.png', './Collec_2\\013.png']
+['./Collec_2\\011.png']

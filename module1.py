@@ -19,7 +19,7 @@ def load_model(pipeline_config_path, ckpt_path):
     ckpt.restore(ckpt_path).expect_partial()
     return detection_model
 
-@tf.function
+@tf.function(reduce_retracing=True)
 def detect_fn(image, detection_model):
     image, shapes = detection_model.preprocess(image)
     prediction_dict = detection_model.predict(image, shapes)
